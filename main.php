@@ -1,5 +1,11 @@
 <?php declare(strict_types=1);
 
+$opposition = [
+    'Snickerdoodle McFizz',
+    'Noodle Noodleman',
+    'Bumble Bopkins'
+];
+
 $elements = [
     'rock',
     'paper',
@@ -23,15 +29,17 @@ echo "====================================" . PHP_EOL;
 $player = 0;
 $pc = 0;
 
+$pcPlayer = $opposition[array_rand($opposition)];
+
 while(true) {
     $computerChoice = $elements[array_rand($elements)];
 
     echo PHP_EOL;
-    echo "Player: $player vs PC: $pc" . PHP_EOL;
+    echo "You: $player vs $pcPlayer: $pc" . PHP_EOL;
     echo PHP_EOL;
 
     $playerChoice = strtolower(readline('Your Choice: '));
-    $message = "PC: " . ucfirst($computerChoice) . ' vs Player: ' . ucfirst($playerChoice);
+    $message = "You: " . ucfirst($playerChoice) . " vs $pcPlayer: " . ucfirst($computerChoice);
 
     if ($computerChoice == $playerChoice)
     {
@@ -39,7 +47,7 @@ while(true) {
         echo "------------------------------------" . PHP_EOL;
         echo PHP_EOL;
     } elseif (in_array($computerChoice, $winningElements[$playerChoice])) {
-        echo $message . '. Player Won!' . PHP_EOL;
+        echo $message . '. You Won!' . PHP_EOL;
         echo PHP_EOL;
         echo "------------------------------------" . PHP_EOL;
 
@@ -53,10 +61,10 @@ while(true) {
     }
 
     if ($player >= 3 || $pc >= 3) {
-        $winner = ($player == 3) ? "Player" : "PC";
+        $winner = ($player == 3) ? "You" : $pcPlayer;
         break;
     }
 }
 
-echo "Player: $player vs PC: $pc" . PHP_EOL;
+echo "You: $player vs $pcPlayer: $pc" . PHP_EOL;
 echo "$winner won!" . PHP_EOL;

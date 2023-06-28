@@ -29,6 +29,7 @@ echo "====================================" . PHP_EOL;
 $player = 0;
 $pc = 0;
 
+$index = 0;
 $pcPlayer = $opposition[array_rand($opposition)];
 
 while(true) {

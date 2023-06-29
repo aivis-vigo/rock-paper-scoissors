@@ -100,7 +100,6 @@ while(true) {
                 $pc = 0;
                 $index = $index++;
                 $pcPlayer = $opposition[$index];
-                // todo: change opp
         }
     }
 }

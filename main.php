@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-$pc = 0;
+$opponent = 0;
 $you = 0;
 $round = 1;
 
@@ -11,7 +11,7 @@ $opposition = [
 ];
 
 $index = 0;
-$pcPlayer = $opposition[$index];
+$oppName = $opposition[$index];
 
 $elements = [
     'rock',
@@ -34,10 +34,10 @@ echo "Rock, Paper, Scissors, Lizard, Spock" . PHP_EOL;
 echo "====================================" . PHP_EOL;
 
 while(true) {
-    $computerChoice = $elements[2];//$elements[array_rand($elements)];
+    $computerChoice = $elements[array_rand($elements)];
 
     echo PHP_EOL;
-    echo "You: $you vs $pcPlayer: $pc" . PHP_EOL;
+    echo "You: $you vs $oppName: $opponent" . PHP_EOL;
     echo PHP_EOL;
 
     $playerChoice = strtolower(readline('Your Choice: '));
@@ -48,7 +48,7 @@ while(true) {
         $playerChoice = strtolower(readline('Your Choice: '));
     }
 
-    $message = "You: " . ucfirst($playerChoice) . " vs $pcPlayer: " . ucfirst($computerChoice);
+    $message = "You: " . ucfirst($playerChoice) . " vs $oppName: " . ucfirst($computerChoice);
 
     if ($computerChoice == $playerChoice)
     {
@@ -66,19 +66,19 @@ while(true) {
         echo PHP_EOL;
         echo "------------------------------------" . PHP_EOL;
 
-        $pc++;
+        $opponent++;
     }
 
-    if ($you == 3 || $pc == 3) {
-        $winner = ($you == 3) ? "You" : $pcPlayer;
+    if ($you == 3 || $opponent == 3) {
+        $winner = ($you == 3) ? "You" : $oppName;
 
-        echo "You: $you vs $pcPlayer: $pc" . PHP_EOL;
+        echo "You: $you vs $oppName: $opponent" . PHP_EOL;
 
         switch ($winner) {
-            case $pcPlayer:
+            case $oppName:
                 echo PHP_EOL;
                 echo "------------------------------------" . PHP_EOL;
-                echo "$pcPlayer won round $round. You lose!" . PHP_EOL;
+                echo "$oppName won round $round. You lose!" . PHP_EOL;
                 exit;
             default:
                 echo PHP_EOL;
@@ -97,9 +97,9 @@ while(true) {
                 echo "====================================" . PHP_EOL;
 
                 $you = 0;
-                $pc = 0;
+                $opponent = 0;
                 $index = $index++;
-                $pcPlayer = $opposition[$index];
+                $oppName = $opposition[$index];
         }
     }
 }

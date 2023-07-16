@@ -5,8 +5,8 @@ class Game
     private int $you;
     private int $opponentWins;
     private int $round;
-    private int $index;
-    private array $opposition;
+    private int $number;
+    private array $opponent;
     private array $elements;
     private array $winningElements;
 
@@ -14,13 +14,15 @@ class Game
     {
         $this->you = 0;
         $this->opponentWins = 0;
-        $this->index = 0;
+        $this->number = 0;
         $this->round = 1;
-        $this->opposition =  [
+
+        $this->opponent =  [
             'Snickerdoodle McFizz',
             'Noodle Noodleman',
             'Bumble Bopkins'
         ];
+
         $this->elements = [
             'rock',
             'paper',
@@ -28,6 +30,7 @@ class Game
             'lizard',
             'spock'
         ];
+
         $this->winningElements = [
             'rock' => ['scissors', 'lizard'],
             'paper' => ['rock', 'spock'],
@@ -39,17 +42,17 @@ class Game
 
     public function run(): void
     {
-        $oppName = $this->opposition[$this->index];
-
         echo "====================================" . PHP_EOL;
         echo "Rock, Paper, Scissors, Lizard, Spock" . PHP_EOL;
         echo "====================================" . PHP_EOL;
+
+        $opponentName = $this->opponent[$this->number];
 
         while(true) {
             $computerChoice = $this->elements[2];//[array_rand($this->elements)];
 
             echo PHP_EOL;
-            echo "You: $this->you vs $oppName: $this->opponentWins" . PHP_EOL;
+            echo "You: $this->you vs $opponentName: $this->opponentWins" . PHP_EOL;
             echo PHP_EOL;
 
             $playerChoice = strtolower(readline('Your Choice: '));
@@ -60,7 +63,7 @@ class Game
                 $playerChoice = strtolower(readline('Your Choice: '));
             }
 
-            $message = "You: " . ucfirst($playerChoice) . " vs $oppName: " . ucfirst($computerChoice);
+            $message = "You: " . ucfirst($playerChoice) . " vs $opponentName: " . ucfirst($computerChoice);
 
             if ($computerChoice == $playerChoice)
             {
@@ -82,15 +85,15 @@ class Game
             }
 
             if ($this->you == 3 || $this->opponentWins == 3) {
-                $winner = ($this->you == 3) ? "You" : $oppName;
+                $winner = ($this->you == 3) ? "You" : $opponentName;
 
-                echo "You: $this->you vs $oppName: $this->opponentWins" . PHP_EOL;
+                echo "You: $this->you vs $opponentName: $this->opponentWins" . PHP_EOL;
 
                 switch ($winner) {
-                    case $oppName:
+                    case $opponentName:
                         echo PHP_EOL;
                         echo "------------------------------------" . PHP_EOL;
-                        echo "$oppName won round $this->round. You lose!" . PHP_EOL;
+                        echo "$opponentName won round $this->round. You lose!" . PHP_EOL;
                         exit;
                     default:
                         echo PHP_EOL;
@@ -98,7 +101,7 @@ class Game
                         echo "You won round $this->round!" . PHP_EOL;
                         $this->round++;
 
-                        if ($this->round > count($this->opposition)) {
+                        if ($this->round > count($this->opponent)) {
                             echo "You are Rock-Paper-Scissors-Lizard-Spock Champion!" . PHP_EOL;
                             echo "====================================" . PHP_EOL;
                             exit;
@@ -110,8 +113,8 @@ class Game
 
                         $this->you = 0;
                         $this->opponentWins = 0;
-                        $index = $this->index++;
-                        $oppName = $this->opposition[$index];
+                        $this->number += 1;
+                        $opponentName = $this->opponent[$this->number];
                 }
             }
         }

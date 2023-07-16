@@ -1,10 +1,42 @@
 <?php declare(strict_types=1);
 
+/**
+ * File: GameTest.php
+ *
+ * This file contains the unit tests for the Game class.
+ *
+ * @category Test
+ * @package  App
+ * @author   Aivis Vigo Reimarts <aivisvigoreimarts@gmail.com>
+ * @license  MIT License
+ * @link     https://github.com/aivis-vigo
+ *
+ * @since PHP 8.1
+ */
+
 use App\Game;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * File: GameTest.php
+ *
+ * This file contains the unit tests for the Game class.
+ *
+ * @category Test
+ * @package  App
+ * @author   Aivis Vigo Reimarts <aivisvigoreimarts@gmail.com>
+ * @license  MIT License
+ * @link     https://github.com/aivis-vigo
+ *
+ * @return void
+ */
 class GameTest extends TestCase
 {
+    /**
+     * Test case: Rock beats Scissors
+     *
+     * @return void
+     */
     public function testRockBeatsScissors(): void
     {
         $exchange = (new Game())->validateWinner('rock', 'scissors');
@@ -12,6 +44,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Rock beats Lizard
+     *
+     * @return void
+     */
     public function testRockBeatsLizard(): void
     {
         $exchange = (new Game())->validateWinner('rock', 'lizard');
@@ -19,6 +56,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Paper beats Rock
+     *
+     * @return void
+     */
     public function testPaperBeatsRock(): void
     {
         $exchange = (new Game())->validateWinner('paper', 'rock');
@@ -26,6 +68,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Paper beats Spock
+     *
+     * @return void
+     */
     public function testPaperBeatsSpock(): void
     {
         $exchange = (new Game())->validateWinner('paper', 'spock');
@@ -33,6 +80,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Scissors beats Paper
+     *
+     * @return void
+     */
     public function testScissorsBeatsPaper(): void
     {
         $exchange = (new Game())->validateWinner('scissors', 'paper');
@@ -40,6 +92,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Scissors beats Lizard
+     *
+     * @return void
+     */
     public function testScissorsBeatsLizard(): void
     {
         $exchange = (new Game())->validateWinner('scissors', 'lizard');
@@ -47,6 +104,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Lizard beats Paper
+     *
+     * @return void
+     */
     public function testLizardBeatsPaper(): void
     {
         $exchange = (new Game())->validateWinner('lizard', 'paper');
@@ -54,6 +116,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Lizard beats Spock
+     *
+     * @return void
+     */
     public function testLizardBeatsSpock(): void
     {
         $exchange = (new Game())->validateWinner('lizard', 'spock');
@@ -61,6 +128,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Spock beats Scissors
+     *
+     * @return void
+     */
     public function testSpockBeatsScissors(): void
     {
         $exchange = (new Game())->validateWinner('spock', 'scissors');
@@ -68,6 +140,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Spock beats Rock
+     *
+     * @return void
+     */
     public function testSpockBeatsRock(): void
     {
         $exchange = (new Game())->validateWinner('spock', 'rock');
@@ -75,6 +152,11 @@ class GameTest extends TestCase
         $this->assertEquals('Opponent', $exchange);
     }
 
+    /**
+     * Test case: Draw scenario
+     *
+     * @return void
+     */
     public function testDrawScenario(): void
     {
         $exchange = (new Game())->validateWinner('rock', 'rock');
@@ -82,6 +164,11 @@ class GameTest extends TestCase
         $this->assertEquals('Draw', $exchange);
     }
 
+    /**
+     * Test case: Next round number
+     *
+     * @return void
+     */
     public function testNextRound(): void
     {
         $game = new Game();
@@ -91,7 +178,12 @@ class GameTest extends TestCase
         $this->assertEquals(2, $nextRound);
     }
 
-    public function testResetPLayerScores(): void
+    /**
+     * Test case: Reset player scores
+     *
+     * @return void
+     */
+    public function testResetPlayerScores(): void
     {
         $game = new Game();
         $game->playerWins = 2;
@@ -102,9 +194,14 @@ class GameTest extends TestCase
         $this->assertEquals([0, 0], [$game->playerWins, $game->opponentWins]);
     }
 
+    /**
+     * Test case: Select next opponent
+     *
+     * @return void
+     */
     public function testSelectNextOpponent(): void
     {
-        $opponentName = (new Game())->nextOpponent(); // current opponent: 'Snickerdoodle McFizz'
+        $opponentName = (new Game())->nextOpponent();
 
         $this->assertEquals('Noodle Noodleman', $opponentName);
     }

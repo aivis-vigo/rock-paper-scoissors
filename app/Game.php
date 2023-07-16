@@ -167,7 +167,7 @@ class Game
      */
     public function opponentThrows(): string
     {
-        return $this->elements[0];//[array_rand($this->elements)];
+        return $this->elements[array_rand($this->elements)];
     }
 
     /**
@@ -179,7 +179,6 @@ class Game
     {
         return strtolower(readline('Your Choice: '));
     }
-
 
     /**
      * Validate the winner of the exchange based on the choices
@@ -251,6 +250,7 @@ class Game
     public function nextOpponent(): string
     {
         $this->number += 1;
+
         return $this->opponents[$this->number];
     }
 }

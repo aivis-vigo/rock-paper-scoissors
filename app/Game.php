@@ -1,5 +1,18 @@
 <?php declare(strict_types=1);
 
+/**
+ * File: Game.php
+ *
+ * This file contains the Game class.
+ *
+ * @category Game
+ * @package  App
+ * @author   Aivis Vigo Reimarts <aivisvigoreimarts@gmail.com>
+ * @license  MIT License
+ * @link     https://github.com/aivis-vigo
+ * @since    PHP 8.1
+ */
+
 namespace App;
 
 use JetBrains\PhpStorm\NoReturn;
@@ -9,13 +22,13 @@ use JetBrains\PhpStorm\NoReturn;
  *
  * @category Game
  * @package  App
+ * @author   Aivis Vigo Reimarts <aivisvigoreimarts@gmail.com>
  * @license  MIT License
- * @link     https://www.example.com
- * @author   Your Name
+ * @link     https://github.com/aivis-vigo
  */
 class Game
 {
-    public int $you;
+    public int $playerWins;
     public int $opponentWins;
     public int $round;
     public int $number;
@@ -25,16 +38,16 @@ class Game
 
     /**
      * Game constructor.
-     * Initializes the game with default values and sets up opponents, elements, and winning elements.
+     * Initializes the game with values, opponents, elements, and winning elements.
      */
     public function __construct()
     {
-        $this->you = 0;
+        $this->playerWins = 0;
         $this->opponentWins = 0;
         $this->number = 0;
         $this->round = 1;
 
-        $this->opponents =  [
+        $this->opponents = [
             'Snickerdoodle McFizz',
             'Noodle Noodleman',
             'Bumble Bopkins'
@@ -52,14 +65,14 @@ class Game
             'rock' => ['scissors', 'lizard'],
             'paper' => ['rock', 'spock'],
             'scissors' => ['paper', 'lizard'],
-            'lizard' =>  ['paper', 'spock'],
-            'spock' =>  ['scissors', 'rock']
+            'lizard' => ['paper', 'spock'],
+            'spock' => ['scissors', 'rock']
         ];
     }
 
     /**
      * Runs the game.
-     * Displays game title, handles player and opponent choices, determines the winner of each round,
+     * Displays game title, wins, opponent choices, determines the winner of each round,
      * and declares the overall champion.
      *
      * @return void
@@ -72,11 +85,11 @@ class Game
 
         $opponentName = $this->selectOpponent();
 
-        while(true) {
+        while ($this->round < 4) {
             $opponentChoice = $this->opponentThrows();
 
             echo PHP_EOL;
-            echo "You: $this->you vs $opponentName: $this->opponentWins" . PHP_EOL;
+            echo "You: $this->playerWins vs $opponentName: $this->opponentWins" . PHP_EOL;
             echo PHP_EOL;
 
             $playerChoice = $this->playerInput();
@@ -94,54 +107,45 @@ class Game
             case 'Opponent':
                 echo "$message. $opponentName Won!" . PHP_EOL;
                 echo PHP_EOL;
-                echo "------------------------------------" . PHP_EOL;
 
-                $this->opponentWins();
+                $this->addOneOpponentWin();
                 break;
             case 'Player':
                 echo "$message. You Won!" . PHP_EOL;
                 echo PHP_EOL;
-                echo "------------------------------------" . PHP_EOL;
 
-                $this->playerWins();
+                $this->addOnePlayerWin();
                 break;
             default:
                 echo "$message. Draw!" . PHP_EOL;
-                echo "------------------------------------" . PHP_EOL;
                 echo PHP_EOL;
                 break;
             }
 
-            if ($this->you == 3 || $this->opponentWins == 3) {
-                $winner = $this->determineWinner($opponentName);
+            echo "------------------------------------" . PHP_EOL;
 
-                echo "You: $this->you vs $opponentName: $this->opponentWins" . PHP_EOL;
+            if ($this->round == count($this->opponents) && $this->playerWins == 3) {
+                echo "You are Rock-Paper-Scissors-Lizard-Spock Champion!" . PHP_EOL;
+                echo "====================================" . PHP_EOL;
+                exit;
+            }
 
-                switch ($winner) {
-                case $opponentName:
-                    echo PHP_EOL;
-                    echo "------------------------------------" . PHP_EOL;
-                    echo "$opponentName won round $this->round. You lose!" . PHP_EOL;
-                    exit;
-                default:
-                    echo PHP_EOL;
-                    echo "------------------------------------" . PHP_EOL;
-                    echo "You won round $this->round!" . PHP_EOL;
-                    $this->nextRound();
+            if ($this->opponentWins == 3) {
 
-                    if ($this->round > count($this->opponents)) {
-                        echo "You are Rock-Paper-Scissors-Lizard-Spock Champion!" . PHP_EOL;
-                        echo "====================================" . PHP_EOL;
-                        exit;
-                    }
+                echo "$opponentName won! You lose!" . PHP_EOL;
+                echo "=====================================" . PHP_EOL;
+                exit;
+            }
 
-                    echo "====================================" . PHP_EOL;
-                    echo "Round $this->round" . PHP_EOL;
-                    echo "====================================" . PHP_EOL;
+            if ($this->playerWins == 3) {
+                $this->nextRound();
 
-                    $this->resetScores();
-                    $opponentName = $this->nextOpponent();
-                }
+                echo "====================================" . PHP_EOL;
+                echo "Round $this->round" . PHP_EOL;
+                echo "====================================" . PHP_EOL;
+
+                $this->resetScores();
+                $opponentName = $this->nextOpponent();
             }
         }
     }
@@ -163,13 +167,13 @@ class Game
      */
     public function opponentThrows(): string
     {
-        return $this->elements[array_rand($this->elements)];
+        return $this->elements[0];//[array_rand($this->elements)];
     }
 
     /**
-     * Gets the player's choice from input.
+     * Gets the players choice from input.
      *
-     * @return string The player's choice
+     * @return string The players choice
      */
     public function playerInput(): string
     {
@@ -180,17 +184,18 @@ class Game
     /**
      * Validate the winner of the exchange based on the choices
      *
-     * @param  string $opponentChoice The opponent's choice
-     * @param  string $playerChoice   The player's choice
+     * @param string $opponent The opponent's choice
+     * @param string $player   The player's choice
+     *
      * @return string The winner of the exchange ('Player', 'Opponent', or 'Draw')
      */
-    public function validateWinner(string $opponentChoice, string $playerChoice): string
+    public function validateWinner(string $opponent, string $player): string
     {
-        if (in_array($opponentChoice, $this->winningElements[$playerChoice])) {
+        if (in_array($opponent, $this->winningElements[$player])) {
             return 'Player';
         }
 
-        if (in_array($playerChoice, $this->winningElements[$opponentChoice])) {
+        if (in_array($player, $this->winningElements[$opponent])) {
             return 'Opponent';
         }
 
@@ -198,13 +203,13 @@ class Game
     }
 
     /**
-     * Increments the player's score.
+     * Increments the players score.
      *
      * @return void
      */
-    public function playerWins(): void
+    public function addOnePlayerWin(): void
     {
-        $this->you++;
+        $this->playerWins++;
     }
 
     /**
@@ -212,20 +217,9 @@ class Game
      *
      * @return void
      */
-    public function opponentWins(): void
+    public function addOneOpponentWin(): void
     {
         $this->opponentWins++;
-    }
-
-    /**
-     * Determine the winner of the round based on the scores
-     *
-     * @param  string $opponent The opponent's name
-     * @return string The winner of the round ('You' or the opponent's name)
-     */
-    public function determineWinner(string $opponent): string
-    {
-        return ($this->you == 3) ? "You" : $opponent;
     }
 
     /**
@@ -245,7 +239,7 @@ class Game
      */
     public function resetScores(): void
     {
-        $this->you = 0;
+        $this->playerWins = 0;
         $this->opponentWins = 0;
     }
 
